@@ -13,15 +13,33 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.exception.ContainerNotFoundException;
 import com.example.demo.model.Containers;
 import com.example.demo.service.ContainersService;
 
 @RestController
-@RequestMapping("/con/api")
+@RequestMapping("/con/api/container")
 public class ContainersController {
 
 	@Autowired
 	private ContainersService service ; 
+	
+//	@Autowired 
+//	private ContainersRepository containersRepository ;
+//	
+//	@Autowired
+//	private ProductsRepository productsRepository;
+	
+//	@PostMapping
+//	public ResponseEntity<Containers> create(@RequestBody Containers con){
+//		return ResponseEntity.ok().body(containersRepository.save(con));
+//	}
+//	
+//	@GetMapping
+//	public ResponseEntity<Page<Containers>> getAll(Pageable pageable){
+//		return ResponseEntity.ok(containersRepository.findAll(pageable));
+//	}
+ 	
 	
 	@PostMapping("/add-con")
 	public ResponseEntity<Containers> save(
@@ -30,6 +48,8 @@ public class ContainersController {
 		return ResponseEntity.ok(service.save(con));
 	}
 	
+	
+
 	@GetMapping("/get/{id}")
 	public ResponseEntity<Containers> findContainer(
 			@PathVariable(name = "id") Integer id
@@ -56,5 +76,8 @@ public class ContainersController {
 	public void delete(@PathVariable(name = "id") Integer id) {
 		service.delete(id);
 	}
+
+	
+	
 	
 }

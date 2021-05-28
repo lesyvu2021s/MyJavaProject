@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.controller.ContainerNotFoundException;
+import com.example.demo.exception.ContainerNotFoundException;
 import com.example.demo.model.Containers;
 import com.example.demo.repository.ContainersRepository;
 
