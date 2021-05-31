@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,38 +15,41 @@ import com.example.demo.repository.ProductsRepository;
 public class ProductsService {
 
 	@Autowired
-	private ProductsRepository productsRepository ; 
+	private ProductsRepository productRepo ; 
 	
 	@Autowired
-	private ContainersRepository containersRepository ;
+	private ContainersRepository containerRepo ; 
 	
 	
-	
-	
-	public List<Products> getAll(){
-		return productsRepository.findAll();
+	public List<Products> getAllProducts(){
+		return productRepo.findAll();
 	}
 	
-	public Products addProducts(Products products) {
-		Containers container = containersRepository.findById(products.getContainer()
-													.getId()).orElse(null);
-		if(null == container) {
-			container = new Containers();
+	public Products addProduct(Products products) {
+		
+		Containers conn = containerRepo.findById(products.getContainer().getId()).orElse(null);
+		if(null == conn) {
+			conn = new Containers();	
 		}
 		
-		container.setName(products.getContainer().getName());
-		//container.setCapacity(products.getContainer().getCapacity());
-		products.setContainer(container);
-		return productsRepository.save(products);
+		conn.setName(products.getContainer().getName());
+		conn.setCapacity(products.getContainer().getCapacity());
+		products.setContainer(conn);
+		return productRepo.saveAndFlush(products);
+		
 	}
+	
 	public Products edit(Products product) {
-		return productsRepository.save(product);
+		return productRepo.save(product);
 	}
 	
-	public void delete(Long id) {
-		productsRepository.deleteById(id);
+	public void deleteProduct(Integer id) {
+		productRepo.deleteById(id);
+		
+		
 	}
 	
-
-	
+	public Optional<Products> GetByIdProducts(Integer id) {
+		return productRepo.findById(id);
+	}
 }

@@ -33,7 +33,7 @@ class ContainersServiceTest {
 	
 	@Test
 	public void saveTest() {
-		Containers con =new Containers(1, "nước suối hiệu soju", "330ml");
+		Containers con =new Containers(1, "nước suối hiệu soju", "330ml", null);
 		
 		service.save(con);
 		verify(repo,times(1)).save(con);
@@ -41,7 +41,7 @@ class ContainersServiceTest {
 	
 	@Test
 	public void findContainerTest() {
-		Containers con = new Containers(1, "nước suối hiệu soju", "330ml");
+		Containers con = new Containers(1, "nước suối hiệu soju", "330ml", null);
 		when(repo.findById(1)).thenReturn(Optional.of(con));
 		
 		Optional<Containers> expected = service.findContainer(con.getId());

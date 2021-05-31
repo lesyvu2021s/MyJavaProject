@@ -35,6 +35,10 @@ public class UserService {
 		userRepository.deleteById(id);
 	}
 	
+	public User edit(User user) {
+		return userRepository.save(user);
+	}
+	
 
 	
 	

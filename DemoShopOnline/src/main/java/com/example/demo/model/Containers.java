@@ -1,6 +1,6 @@
 package com.example.demo.model;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,55 +11,33 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 @Entity
-@Table(name="containers")
+@Table(name = "containers")
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class Containers {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@Column(name="id")
 	private Integer id ;
 	
-	@Column(name = "name")
-	private String name;
-	@Column(name = "capacity")
+	private String name ;
 	private String capacity ;
 	
-	@OneToMany(mappedBy = "container" , cascade = CascadeType.ALL)
-	private List<Products> product ;
-	
-	public Containers() {
-		
-	}
-	public Containers(Integer id, String name, String capacity) {
-		
-		this.name = name;
-		this.capacity = capacity;
-	}
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getCapacity() {
-		return capacity;
-	}
-	public void setCapacity(String capacity) {
-		this.capacity = capacity;
-	}
-	public List<Products> getProduct() {
-		return product;
-	}
-	public void setProduct(List<Products> product) {
-		this.product = product;
-	}
-	
-	
-	
+	@OneToMany(mappedBy = "container",cascade = CascadeType.ALL , orphanRemoval = true)
+	@JsonIgnore
+	private Set<Products> products;
 }
