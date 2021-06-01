@@ -14,7 +14,7 @@ public class User {
 
 	@javax.persistence.Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer Id ;
+	private Integer id ;
 	
 	@Column(name = "name")
 	private String name;
@@ -25,19 +25,25 @@ public class User {
 	public User() {
 		
 	}
+	
 	public User(Integer id, String name, String email, String password) {
-		
-		Id = id;
+		super();
+		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.password = password;
 	}
+	
+	
+
 	public Integer getId() {
-		return Id;
+		return id;
 	}
+
 	public void setId(Integer id) {
-		Id = id;
+		this.id = id;
 	}
+
 	public String getName() {
 		return name;
 	}
