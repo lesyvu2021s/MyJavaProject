@@ -33,6 +33,8 @@ public class Products {
 	@Column(name = "id")
 	private Integer id;
 	
+	@Column(name="photoImage")
+	private String photoImage;
 	@Column(name = "name")
 	private String name ; 
 	private String content ; 

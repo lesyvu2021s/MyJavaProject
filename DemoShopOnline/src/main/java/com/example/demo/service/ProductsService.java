@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.model.Containers;
 import com.example.demo.model.Products;
@@ -52,4 +54,11 @@ public class ProductsService {
 	public Optional<Products> GetByIdProducts(Integer id) {
 		return productRepo.findById(id);
 	}
+	
+	
+	public Products store(MultipartFile file , Integer id) {
+		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+		Products product =
+	}
+	
 }

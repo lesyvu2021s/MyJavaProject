@@ -58,7 +58,7 @@ public class UserController {
 			@PathVariable(name = "id") Integer id,
 			@RequestBody User user
 			){
-		return ResponseEntity.ok().body(userService.edit(user));
+		return ResponseEntity.ok().body(userService.edit(user , id ));
 	}
 	
 	@GetMapping("/get")
