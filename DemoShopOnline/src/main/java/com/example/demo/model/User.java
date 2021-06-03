@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Table;
 
+import org.springframework.hateoas.Link;
+
 
 @Entity
 @Table(name = "users")
@@ -62,6 +64,8 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	
 	
 	
 	

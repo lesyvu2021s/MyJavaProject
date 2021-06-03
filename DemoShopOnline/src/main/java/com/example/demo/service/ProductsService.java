@@ -56,9 +56,6 @@ public class ProductsService {
 	}
 	
 	
-	public Products store(MultipartFile file , Integer id) {
-		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-		Products product =
-	}
+	
 	
 }

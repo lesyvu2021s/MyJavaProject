@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.Products;
 import com.example.demo.service.ProductsService;
-
 @RestController
 public class ProductsController {
 
@@ -55,5 +54,7 @@ public class ProductsController {
 			){
 		return ResponseEntity.ok(productsService.GetByIdProducts(id));
 	}
+	
+	
 	
 }
