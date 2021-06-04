@@ -62,17 +62,7 @@ class UserServiceTest {
 		verify(repo,times(1)).findAll();
 	}
 	
-	@Test
-	public void findUserByIdTest() {
-		User user = new User(1, "Brand", "brand@gmail.com", "123456");
-		when(repo.findById(1)).thenReturn(Optional.of(user));
-		
-		Optional<User> expected =service.findUserById(user.getId());
-		assertThat(expected).isSameAs(user);
-		verify(repo).findById(user.getId());
-		
-		
-	}
+
 	
 	@Test
 	public void deleteUserTest() {

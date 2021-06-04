@@ -39,8 +39,13 @@ public class UserService {
 		
 	}
 	
-	public Optional<User> findUserById(Integer id) {
-		return userRepository.findById(id);
+	public User findUserById(Integer id) {
+		Optional<User> optinalUser =userRepository.findById(id);
+		if(optinalUser.isPresent()) {
+			return optinalUser.get();
+		}else {
+			throw new ContainerNotFoundException(id);
+		}
 		
 	}
 	

@@ -8,6 +8,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.UserDto;
 import com.example.demo.exception.ContainerNotFoundException;
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
@@ -32,6 +34,16 @@ public class UserController {
 	@Autowired
 	private UserService userService ;
 	
+	@Autowired
+	private ModelMapper modelMapper ;
+	
+	
+	
+	public UserController(UserService userService, ModelMapper modelMapper) {
+		this.userService = userService;
+		this.modelMapper = modelMapper;
+	}
+
 	@PostMapping("/add-user")
 	public ResponseEntity<User> save(
 			@RequestBody User user
@@ -80,17 +92,17 @@ public class UserController {
 //		return ResponseEntity.ok(list);
 //	}
 	
-	@GetMapping("/get/{id}")
-	public EntityModel<User> retrieveUser(@PathVariable Integer id){
-		Optional<User> optinalUser =userService.findUserById(id);
-		if(!optinalUser.isPresent()) {
-			throw new ContainerNotFoundException(id);
-		}
-		EntityModel<User> resource =EntityModel.of(optinalUser.get());
-		WebMvcLinkBuilder linkTo =linkTo(methodOn(this.getClass()).getAllUser2());
-		resource.add(linkTo.withRel("all-user"));
-		return resource ;
-	}
+//	@GetMapping("/get/{id}")
+//	public EntityModel<User> retrieveUser(@PathVariable Integer id){
+//		Optional<User> optinalUser =userService.findUserById(id);
+//		if(!optinalUser.isPresent()) {
+//			throw new ContainerNotFoundException(id);
+//		}
+//		EntityModel<User> resource =EntityModel.of(optinalUser.get());
+//		WebMvcLinkBuilder linkTo =linkTo(methodOn(this.getClass()).getAllUser2());
+//		resource.add(linkTo.withRel("all-user"));
+//		return resource ;
+//	}
 	
 	@GetMapping("/get")
 	public ResponseEntity<List<User>> getAllUser2(){
@@ -98,6 +110,15 @@ public class UserController {
 	}
 	
 	
+	
+	@GetMapping("/get/{id}")
+	public ResponseEntity<UserDto> getUserById(@PathVariable(name = "id") Integer id){
+		User user = userService.findUserById(id);
+		
+		UserDto userReponse = modelMapper.map(user, UserDto.class);
+		return ResponseEntity.ok().body(userReponse);
+		
+	}
 	
 	
 }
