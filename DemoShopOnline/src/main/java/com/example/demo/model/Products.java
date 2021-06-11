@@ -35,13 +35,14 @@ public class Products {
 	@Column(name = "id")
 	private Integer id;
 	
-	@Column(name="photoImage")
-	private String photoImage;
+	
 	@Column(name = "name")
 	private String name ; 
 	private String content ; 
 	private Double price ;
 	private String unit ;
+	@Column(name="photo_image")
+	private String photoImage;
 	
 	@ManyToOne(fetch = FetchType.LAZY , cascade = CascadeType.ALL)
 	@JoinColumn(name = "container_id")

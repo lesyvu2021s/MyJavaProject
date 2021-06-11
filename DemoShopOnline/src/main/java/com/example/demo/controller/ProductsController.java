@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,11 +13,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.model.Products;
 import com.example.demo.service.ProductsService;
 @RestController
+@RequestMapping("/con/api/products")
 public class ProductsController {
 
 	@Autowired
@@ -54,7 +59,6 @@ public class ProductsController {
 			){
 		return ResponseEntity.ok(productsService.GetByIdProducts(id));
 	}
-	
 	
 	
 }

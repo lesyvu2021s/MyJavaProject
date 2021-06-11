@@ -2,16 +2,10 @@ package com.example.demo.controller;
 
 
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 import java.util.List;
-import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.UserDto;
-import com.example.demo.exception.ContainerNotFoundException;
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
 
@@ -36,6 +29,9 @@ public class UserController {
 	
 	@Autowired
 	private ModelMapper modelMapper ;
+	
+	
+	
 	
 	
 	
@@ -119,6 +115,8 @@ public class UserController {
 		return ResponseEntity.ok().body(userReponse);
 		
 	}
+	
+	
 	
 	
 }
