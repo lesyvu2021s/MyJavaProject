@@ -68,5 +68,52 @@ public class AuthController {
 	}
 	
 
+	@PostMapping("/signup")
+	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signupRequest){
+		
+		if(userRepository.existsByName(signupRequest.getName())) {
+			return ResponseEntity.badRequest().body(new MessageResponse("Lỗi : tên người dùng đã được sử dụng "));
+		}
+		if(userRepository.existsByEmail(signupRequest.getEmail())) {
+			return ResponseEntity.badRequest().body(new MessageResponse("Lỗi : Email đã được sử dụng  "));
+		}
+		
+		//tạo tài khoản 
+		User user = new User(signupRequest.getName() , signupRequest.getEmail() ,
+				passwordEncoder.encode(signupRequest.getPassword()));
+		Set<String> strRoles =signupRequest.getRole();
+		Set<Role> roles =new HashSet<>();
+		if(strRoles == null ) {
+			Role userRole =roleReponsitory.findByName(ERole.ROLE_USER)
+								.orElseThrow(()-> new RuntimeException("Lỗi : không tìm thấy Role"));
+			roles.add(userRole);
+		}else {
+			strRoles.forEach(role -> {
+				switch (role) {
+				case "admin":
+					 		Role adminRole =roleReponsitory.findByName(ERole.ROLE_ADMIN)
+					 					.orElseThrow(() -> new RuntimeException("Lỗi : không tìm thấy Role"));
+					 		roles.add(adminRole);
+					break;
+				case "mod":
+							Role modRole =roleReponsitory.findByName(ERole.ROLE_MODERATOR)
+											.orElseThrow(()-> new RuntimeException("Lỗi : không tìm thấy Role"));
+							roles.add(modRole);
+					break;		
+				default:
+							Role userRole = roleReponsitory.findByName(ERole.ROLE_USER)
+											.orElseThrow(()-> new RuntimeException("Lỗi : không tìm thấy Role"));
+							roles.add(userRole);
+					break;
+				}
+			});
+		}
+		
+		user.setRoles(roles);
+		userRepository.save(user);
+		
+		return ResponseEntity.ok(new MessageResponse("Người dùng đăng kí thành công!"));
+		
+	}
 	
 }
