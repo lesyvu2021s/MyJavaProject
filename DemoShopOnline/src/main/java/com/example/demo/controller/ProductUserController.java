@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.exception.ProductUserNotfoundException;
 import com.example.demo.model.ProductUser;
 import com.example.demo.service.ProductUserService;
 
@@ -28,20 +29,25 @@ public class ProductUserController {
 		return ResponseEntity.ok().body(service.save(productUser));
 	}
 	
-	@GetMapping("/get")
-	public ResponseEntity<List<ProductUser>> findAll(){
-		return ResponseEntity.ok(service.findAll());
-	}
+	
 	
 	@DeleteMapping("/delete/{id}")
 	public void delete(@PathVariable("id") Integer id) {
+		
 		service.delete(id);
 	}
 	
 	@GetMapping("/get/{id}")
 	public ResponseEntity<Optional<ProductUser>> findProductUserById(@PathVariable(name = "id") Integer id){
+		
+		
 		return ResponseEntity.ok(service.getProductUserById(id));
 		
+	}
+	
+	@GetMapping("/get")
+	public ResponseEntity<List<ProductUser>> GetAll(){
+		return ResponseEntity.ok(service.findAll());
 	}
 	
 }
