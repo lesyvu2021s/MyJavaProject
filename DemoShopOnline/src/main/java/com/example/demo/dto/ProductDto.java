@@ -1,9 +1,5 @@
 package com.example.demo.dto;
 
-import java.time.LocalDate;
-
-import javax.persistence.Id;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,8 +11,12 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class OrderDto {
-	private Integer id; 
-	private LocalDate createDate  ;
-	private Integer UserId;
+public class ProductDto {
+
+	private Integer id ; 
+	private String name ; 
+	private String content ; 
+	private Double price ;
+	private String unit ; 
+	ContainerDto conDto ; 
 }

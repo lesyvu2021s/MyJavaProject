@@ -27,7 +27,8 @@ public class OrdersService {
 	}
 	
 	public Orders crateOrder(Orders order) {
-		return orderRepository.save(order);
+		
+		return orderRepository.save( order);
 	}
 	
 	public void deleteById(Integer id ) {
