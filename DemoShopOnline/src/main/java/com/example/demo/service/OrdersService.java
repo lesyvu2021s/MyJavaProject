@@ -1,14 +1,16 @@
 package com.example.demo.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.exception.NotFoundException;
 import com.example.demo.model.Orders;
-import com.example.demo.model.User;
 import com.example.demo.repository.OrderRepository;
 import com.example.demo.repository.UserRepository;
 
@@ -18,12 +20,17 @@ public class OrdersService {
 	@Autowired
 	private OrderRepository orderRepository ;
 	
-	@Autowired
-	private UserRepository userRepo ;
 	
 	
-	public List<Orders> getAll(){
-		return orderRepository.findAll();
+	
+	public List<Orders> getAll( Integer pageNo , Integer pageSize ){
+		Pageable pageable =PageRequest.of(pageNo, pageSize);
+		Page<Orders> pagedResult =orderRepository.findAll(pageable);
+		if(pagedResult.hasContent()) {
+			return pagedResult.getContent();
+		}else {
+		return new ArrayList<Orders>() ;
+		}
 	}
 	
 	public Orders crateOrder(Orders order) {

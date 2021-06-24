@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.exception.ContainerNotFoundException;
+import com.example.demo.exception.NotFoundException;
 import com.example.demo.model.Containers;
 import com.example.demo.repository.ContainersRepository;
 
@@ -20,8 +21,15 @@ public class ContainersService {
 		return repo.save(con);
 	}
 	
-	public Optional<Containers> findContainer(int id) {
-		return repo.findById(id);
+	public Containers findContainer(int id) {
+		Optional<Containers> optinalContainer =repo.findById(id);
+		Containers con = null;
+		if(optinalContainer.isPresent()) {
+			con = optinalContainer.get();
+		}else {
+			new NotFoundException("Id không tồn tại ");
+		}
+		return con;
 	}
 	
 	public List<Containers> findAll(){
@@ -29,18 +37,15 @@ public class ContainersService {
 		
 	}
 	
-	public Containers update(int id,Containers container) {
+	public Containers update(Integer id,Containers container) {
 	
-		Optional<Containers> con = repo.findById(id);
-		if(!con.isPresent()) {
-			throw new ContainerNotFoundException(id);
-		}else {
-			repo.findById(id);
-			return repo.saveAndFlush(container);
+		Containers con = repo.findById(id).orElseThrow(
+				()->new NotFoundException("Id không tồn tại "));
+			con.setName(container.getName());
+			con.setCapacity(container.getCapacity());
+			return repo.saveAndFlush(con);
 		}
 		
-
-	}
 	
 	
 	public void delete(Integer id) {

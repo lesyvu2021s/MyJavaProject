@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -39,5 +40,5 @@ public class Containers {
 	
 	@OneToMany(mappedBy = "container",cascade = CascadeType.ALL , orphanRemoval = true)
 	@JsonIgnore
-	private Set<Products> products;
+	private List<Products> products;
 }

@@ -1,13 +1,19 @@
 package com.example.demo.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.exception.ContainerNotFoundException;
+import com.example.demo.exception.NotFoundException;
 import com.example.demo.exception.ProductUserNotfoundException;
 import com.example.demo.model.ProductUser;
 import com.example.demo.model.User;
@@ -23,33 +29,44 @@ public class ProductUserService {
 		return productUserRepo.save(productUser);
 	}
 	
-	public List<ProductUser> findAll(){
+	public List<ProductUser> findAll(Integer pageNo , Integer pageSize , String sortBY){
+		Pageable paging = PageRequest.of(pageNo, pageSize ,Sort.by(sortBY));
 		
-		return productUserRepo.findAll();
+		Page<ProductUser> pagedResult = productUserRepo.findAll(paging);
+		if(pagedResult.hasContent()) {
+			return pagedResult.getContent();
+		}else {
+			return new ArrayList<ProductUser>();
+		}
+		
 	}
 	
 	public void  delete(Integer id) {
-		Optional<ProductUser> productUser = productUserRepo.findById(id);
-		if(!productUser.isPresent()) {
-			throw new ProductUserNotfoundException();
+		ProductUser productUser = productUserRepo.findById(id).orElseThrow(
+				()-> new NotFoundException("Id không tồn tại "));
+			productUserRepo.delete(productUser);;
+		
+		
+		
+	}
+	
+	public ProductUser getProductUserById(int id) {
+		Optional<ProductUser> optinalProductUser = productUserRepo.findById(id);
+		ProductUser productUser = null ; 
+		if(optinalProductUser.isPresent()) {
+			productUser = optinalProductUser.get();
 		}else {
-			productUserRepo.deleteById(id);
+			new NotFoundException("Id không tồn tại" + id);
 		}
-		
-		
-	}
-	
-	public Optional<ProductUser> getProductUserById(int id) {
-		Optional<ProductUser> productUser = productUserRepo.findById(id);
-		if(!productUser.isPresent()) {
-			throw new ProductUserNotfoundException();
-		}else
-			return productUserRepo.findById(id);
+			return productUser;
 	}
 	
 	
-	public void updateProductUser(Integer productUserId ) {
-		
+	public ProductUser updateProductUser(Integer productUserId , ProductUser productUserRequest ) {
+		ProductUser productUser = productUserRepo.findById(productUserId).orElseThrow(
+				()-> new NotFoundException("Id không tồn tại "));
+		productUser.setPrice(productUserRequest.getPrice());
+		return productUserRepo.save(productUser);
 	}
 	
 	

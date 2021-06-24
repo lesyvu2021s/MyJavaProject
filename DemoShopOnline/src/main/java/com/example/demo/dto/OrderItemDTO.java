@@ -8,13 +8,13 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString
-public class ProductUserDto {
+public class OrderItemDTO {
 
-	private Integer id ; 
-	private Double price ;
-	private Integer UserId ; 
-	private Integer ProductId ;
+	private Integer id;
+	private Integer productId;
+	private Integer userId;
+	private double price ;
 }

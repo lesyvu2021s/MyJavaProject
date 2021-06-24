@@ -3,7 +3,6 @@ package com.example.demo.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -15,10 +14,8 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-
-import org.hibernate.validator.constraints.UniqueElements;
-import org.springframework.hateoas.Link;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 
 
 @Entity
@@ -33,15 +30,13 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id ;
 	
-	@NotBlank
-	@Size(max = 20)
+	@NotBlank(message = "Thiếu username")
 	private String name;
-	@NotBlank
-	@Size(max=50)
-	@Email
+	@Email(message = "Email không hợp lệ ")
 	private String email;
-	@NotBlank
-	@Size(max = 120)
+	
+	@NotBlank(message = "Thiếu password ")
+	@Pattern(regexp = "/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,}$")
 	private String password ;
 	
 	
@@ -51,21 +46,24 @@ public class User {
 					inverseJoinColumns = @JoinColumn(name="role_id"))
 	private Set<Role> roles = new HashSet<>();
 	
-	
-	
 	public User() {
 		
 	}
 
 	
 
-	public User(@NotBlank @Size(max = 20) String name, @NotBlank @Size(max = 50) @Email String email,
-			@NotBlank @Size(max = 120) String password) {
+	
+
+
+	public User(String name, String email, String password) {
 		super();
 		this.name = name;
 		this.email = email;
 		this.password = password;
 	}
+
+
+
 
 
 

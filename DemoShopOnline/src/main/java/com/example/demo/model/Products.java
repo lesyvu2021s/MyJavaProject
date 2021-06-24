@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -41,7 +42,7 @@ public class Products {
 	private String content ; 
 	private Double price ;
 	private String unit ;
-	@Column(name="photo_image")
+	@Lob
 	private String photoImage;
 	
 	@ManyToOne(fetch = FetchType.LAZY , cascade = CascadeType.ALL)

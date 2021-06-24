@@ -1,8 +1,11 @@
 package com.example.demo.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,8 +16,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.ContainerDto;
+import com.example.demo.dto.ProductDto;
+import com.example.demo.dto.ProductUserDto;
 import com.example.demo.exception.ContainerNotFoundException;
 import com.example.demo.model.Containers;
+import com.example.demo.model.ProductUser;
+import com.example.demo.model.Products;
 import com.example.demo.service.ContainersService;
 
 @RestController
@@ -23,6 +31,9 @@ public class ContainersController {
 
 	@Autowired
 	private ContainersService service ; 
+	
+	@Autowired
+	private ModelMapper modelMapper ;
 	
 //	@Autowired 
 //	private ContainersRepository containersRepository ;
@@ -41,42 +52,59 @@ public class ContainersController {
 //	}
  	
 	
-	@PostMapping("/add-con")
-	public ResponseEntity<Containers> save(
-			@RequestBody Containers con
+	@PostMapping("/post")
+	public ResponseEntity<ContainerDto> save(
+			@RequestBody ContainerDto conDto
 			){
-		return ResponseEntity.ok(service.save(con));
+		Containers conRequest = modelMapper.map(conDto, Containers.class);
+		
+		Containers con = service.save(conRequest);
+		
+		ContainerDto conReponse = modelMapper.map(con, ContainerDto.class);
+		
+		return new ResponseEntity<ContainerDto>(conReponse,HttpStatus.CREATED);
 	}
 	
 	
 
 	@GetMapping("/get/{id}")
-	public ResponseEntity<Containers> findContainer(
+	public ResponseEntity<ContainerDto> findContainer(
 			@PathVariable(name = "id") Integer id
 			){
-		
-		return ResponseEntity.ok(service.findContainer(id).orElseThrow(()-> new ContainerNotFoundException(id)));
+		Containers con = service.findContainer(id);
+		ContainerDto conDto = modelMapper.map(con, ContainerDto.class);
+		return ResponseEntity.ok(conDto);
 	}
 	
 	
 	@GetMapping("/get")
-	public ResponseEntity<List<Containers>> findAll(){
-		return ResponseEntity.ok(service.findAll());
+	public List<ContainerDto> findAll(){
+		
+		return service.findAll().stream().map(container -> modelMapper.map(container, ContainerDto.class))
+				.collect(Collectors.toList());
 	}
 	
-	@PutMapping("/put/{id}")
-	public ResponseEntity<Containers> update(
-			@PathVariable(name = "id") Integer id , 
-			@RequestBody Containers container
-			){
-		return ResponseEntity.ok().body(service.update(id,container));
-	}
 	
 	@DeleteMapping("delete/{id}")
-	public void delete(@PathVariable(name = "id") Integer id) {
+	public String delete(@PathVariable(name = "id") Integer id) {
 		service.delete(id);
+		return "Xóa thành công !";
 	}
 
+	@PutMapping("/put/{id}")
+	public ResponseEntity<ContainerDto> updateContainer(@PathVariable("id") Integer id , 
+			@RequestBody ContainerDto conDto){
+		
+		Containers containerRequest =modelMapper.map(conDto, Containers.class);
+		
+		Containers con  =service.update(id, containerRequest);
+		
+		ContainerDto containerReponse =modelMapper.map(con, ContainerDto.class);
+		
+		
+		return ResponseEntity.ok().body(containerReponse);
+		
+	}
 	
 	
 	

@@ -1,8 +1,7 @@
 package com.example.demo.exception;
 
-import java.io.IOException;
-
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -18,9 +17,9 @@ public class ApiExceptionHandler {
 		
 	}
 	
-	@ExceptionHandler(value = {IOException.class})
+	@ExceptionHandler(BindException.class)
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
-	public ErrorMessage badRequest(ProductUserNotfoundException ex , WebRequest requesst) {
+	public ErrorMessage badRequest(BindException ex , WebRequest requesst) {
 		return new ErrorMessage(400, "Yêu cầu không hợp lệ ");
 	}
 	
